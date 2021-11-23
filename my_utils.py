@@ -72,6 +72,23 @@ def get_matches_timelines(match_id):
     res2 = requests.get(url).json()
     return res1, res2
 
+def get_user_name_list(tier):
+    tier_lst = ['I','II','III','IV']
+    lst = []
+    p = random.randrange(1,10)
+    
+    # riot api
+    for t in tqdm(tier_lst):
+        url='https://kr.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/'+tier+'/'+t+'?page='+str(p)+'&api_key='+riot_api_key
+        res = requests.get(url).json()
+        lst = lst+sample(res, 5)
+    
+    # summonerName
+    print('get summonerName...')
+    summonerName_lst = list(map(lambda x: x['summonerName'], lst))
+    
+    return summonerName_lst
+
 # riot 데이터로부터 raw data 추출
 def get_rawData(tier):
     tier_lst = ['I','II','III','IV']
